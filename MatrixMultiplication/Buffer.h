@@ -9,7 +9,7 @@
 
 using namespace std;
 
-typedef pair<unsigned int, unsigned int> Locate;
+typedef pair<unsigned int, unsigned int> Locate;//位置
 
 /// @brief Locate's hash, used for hashmap
 struct Locate_hash {
@@ -40,6 +40,19 @@ public:
 		file.read((char*)&this->columnSize, sizeof(int));
 		file.close();
 	}
+	/// @brief 构造函数
+	Buffer() : filename(""), rowSize(0), columnSize(0), dirty(false), visit(0), miss(0) {}
+
+	/// @brief 手动初始化
+	void init(string filename) {
+		this->filename = filename;
+		ifstream file(this->filename, ios::binary);
+		if (!file.is_open())
+			throw "File Open Failed!";
+		file.read((char*)&this->rowSize, sizeof(int));//读取行数
+		file.read((char*)&this->columnSize, sizeof(int));//读取列数
+		file.close();
+	}
 
 	/// @brief 析构函数
 	~Buffer() {
@@ -68,6 +81,7 @@ public:
 	//统计缓存命中率
 	int visit;
 	int miss;
+	/// @brief 命中率
 	double hitRate() {
 		return 1.0 - (double)this->miss / this->visit;
 	}
