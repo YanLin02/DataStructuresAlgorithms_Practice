@@ -9,9 +9,10 @@
 using namespace std;
 
 void test() {
-	cout << "BUFF_SIZE = " << BUFFER_SIZE << endl << endl;
-	Matrix A(10, 10, "A.bin", "random");
-	Matrix B(10, 10, "B.bin", "random");
+	cout << "BUFF_SIZE = " << BUFFER_SIZE << endl;
+	cout << "MATRIX_SIZE = " << MATRIX_SIZE << endl << endl;
+	Matrix A(MATRIX_SIZE, MATRIX_SIZE, "A.bin", "random");
+	Matrix B(MATRIX_SIZE, MATRIX_SIZE, "B.bin", "random");
 	Matrix IKJ = A.ikj_multiple(B);
 
 	cout << "==========================   IKJ   ==========================" << endl;

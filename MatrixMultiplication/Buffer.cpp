@@ -24,7 +24,6 @@ void Buffer::setNum(int row, int column, double num) {
 		this->Buf[Locate(row, column)] = num;// 直接写入
 	else {// 如果不存在
 		this->miss++;// 缓存未命中次数+1
-		//writeBack();// 写回
 		this->readIn(Locate(row, column));// 读入
 		this->Buf[Locate(row, column)] = num;// 写入
 	}
