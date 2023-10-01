@@ -5,6 +5,7 @@
 /// @param column 列号
 /// @return 对应的双精度浮点数
 double Buffer::getNum(int row, int column) {
+	this->visit++;// 访问次数+1
 	// 获取不存在的数据 抛出string异常
 	if (!this->Buf.count(Locate(row, column)))
 		throw "Not Found in Buf!";
@@ -16,9 +17,11 @@ double Buffer::getNum(int row, int column) {
 /// @param column 列号
 /// @param num 需要写入的双精度浮点数
 void Buffer::setNum(int row, int column, double num) {
+	this->visit++;// 访问次数+1
 	if (this->Buf.count(Locate(row, column)))// 如果存在
 		this->Buf[Locate(row, column)] = num;// 直接写入
 	else {// 如果不存在
+		this->miss++;// 缓存未命中次数+1
 		writeBack();// 写回
 		this->readIn(Locate(row, column));// 读入
 		this->Buf[Locate(row, column)] = num;// 写入

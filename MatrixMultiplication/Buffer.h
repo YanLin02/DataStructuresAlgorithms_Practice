@@ -32,13 +32,19 @@ public:
 	/// @brief 构造函数
 	/// @param filename 交互文件名
 	Buffer(string filename)
-		: dirty(false), filename(filename) {
+		: dirty(false), filename(filename), visit(0), miss(0) {
 		ifstream file(this->filename, ios::binary);
 		if (!file.is_open())
 			throw "File Open Failed!";
 		file.read((char*)&this->rowSize, sizeof(int));
 		file.read((char*)&this->columnSize, sizeof(int));
 		file.close();
+	}
+
+	/// @brief 析构函数
+	~Buffer() {
+		if (this->dirty)
+			writeBack();
 	}
 
 	/// @brief 获取数据
@@ -58,4 +64,11 @@ public:
 
 	/// @brief 从指定位置读入
 	void readIn(const Locate& startLocate);
+
+	//统计缓存命中率
+	int visit;
+	int miss;
+	double hitRate() {
+		return 1.0 - (double)this->miss / this->visit;
+	}
 };
