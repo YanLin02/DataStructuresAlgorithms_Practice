@@ -36,4 +36,8 @@
 *.vcxproj
 *.filters
 *.user
-.vs/*
+.vs
+.vscode
+.gccout
+*.bin
+x64
