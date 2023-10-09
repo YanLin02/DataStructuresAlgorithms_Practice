@@ -5,9 +5,12 @@
 
 using namespace std;
 
+class MergeSort;
+
 class Buffer
 {
-public:
+	friend class MergeSort;//允许MergeSort访问私有成员
+
 	string filename; ///<文件名
 
 	int* buf; ///<缓存
@@ -20,11 +23,16 @@ public:
 	int endPos; ///<结束位置
 	bool isEnd; ///<是否结束
 
+	/// @brief 通过文件名和缓存大小构造缓存
+	/// @param filename 文件名
+	/// @param bufSize 缓存大小
 	Buffer(string filename, int bufSize)
 		: filename(filename), bufSize(bufSize), curSize(0), startPos(0), endPos(0), curPos(0), isEnd(false) {
 		buf = new int[bufSize];
 	}
 
+	/// @brief 通过缓存大小构造临时缓存
+	/// @param bufSize 缓存大小
 	Buffer(int bufSize)
 		: filename("temp.bin"), bufSize(bufSize), curSize(0), startPos(0), endPos(0), curPos(0), isEnd(false) {
 		ofstream file("temp.bin", ios::binary);
@@ -32,6 +40,9 @@ public:
 		buf = new int[bufSize];
 	}
 
+	/// @brief 根据起始位置和结束位置读入缓存
+	/// @param start 起始位置
+	/// @param end 结束位置
 	void readIn(int start, int end) {
 		ifstream file(filename, ios::binary);
 		if (!file.is_open())
@@ -55,6 +66,8 @@ public:
 		file.close();
 	}
 
+	/// @brief 根据是否读完继续读取文件
+	/// @return 是否读完
 	bool continueRead() {
 		if (isEnd)
 			return false;
@@ -77,6 +90,7 @@ public:
 		}
 	}
 
+	/// @brief 将缓存写回文件
 	void writeBack() {
 		ofstream file(filename, ios::binary | ios::in);//防止覆盖
 		if (!file.is_open())
@@ -88,6 +102,9 @@ public:
 		curSize = 0;//重置大小
 	}
 
+	/// @brief 获取一个数
+	/// @param num 引用方式返回的数
+	/// @return 是否成功
 	bool getNum(int& num) {
 		if (curPos < curSize)
 			num = buf[curPos++];
@@ -99,6 +116,8 @@ public:
 		return true;
 	}
 
+	/// @brief 将一个数放入缓存
+	/// @param num 要放入的数
 	void putIn(int num) {
 		buf[curSize++] = num;
 		if (curSize == bufSize) {
@@ -108,19 +127,20 @@ public:
 		}
 	}
 
+	/// @brief 设置文件名
+	/// @param filename 文件名
 	void setFilename(string filename) {
 		this->filename = filename;
 	}
 
-	void setBufSize(unsigned int bufSize) {
-		this->bufSize = bufSize;
-	}
-
+	/// @brief 清空文件
 	void clean() {
 		ofstream file(filename, ios::binary);
 		file.close();
 	}
 
+	/// @brief 测试打印缓存
+	/// @note 仅用于调试
 	void testPrint() {
 		for (size_t i = 0; i < curSize; i++)
 			cout << buf[i] << " ";

@@ -2,8 +2,7 @@
 #include "Buffer.h"
 #include <cmath>
 
-class MergeSort
-{
+class MergeSort{
 public:
 	MergeSort(string filename)
 		:filename(filename), input1(filename, INPUT_BUFFER_SIZE), input2(filename, INPUT_BUFFER_SIZE), output(2 * INPUT_BUFFER_SIZE), curMergeSize(1), dataInTemp(false) {
@@ -15,6 +14,7 @@ public:
 		file.close();
 	}
 
+	/// @brief 归并排序
 	void sort() {
 
 		//curMergeSize = 1 不会进行排序 默认输出文件是filename dataInTemp = false
@@ -31,7 +31,6 @@ public:
 			/// 单支现象出现在第二个缓存读入的数目不足 curMergeSize 个数时，此时第一个缓存读入的数目一定是 curMergeSize 个数
 
 			//进行一层排序
-
 
 			int MergeTimes = ceil((double)fileLength / (2 * curMergeSize));//一层需要归并的次数
 
@@ -100,6 +99,7 @@ public:
 		cleanfile();//清理文件
 	}
 
+	/// @brief 打印文件
 	void print() {
 		ifstream file(filename, ios::binary);
 		if (!file.is_open())
@@ -125,6 +125,7 @@ private:
 
 	bool dataInTemp; ///<数据是否在临时文件中
 
+	/// @brief 交换文件，减少临时文件的使用
 	void changeFile() {
 		output.writeBack();
 		string temp = input1.filename;
@@ -133,6 +134,7 @@ private:
 		output.clean();
 	}
 
+	/// @brief 清理临时文件
 	void cleanfile() {
 		if (dataInTemp) {
 			remove(filename.c_str());
@@ -142,6 +144,8 @@ private:
 			remove("temp.bin");
 	}
 
+	/// @brief 根据数据位置打印文件
+	/// @details 用于调试
 	void testPrint() {
 		ifstream file;
 		if (dataInTemp)
