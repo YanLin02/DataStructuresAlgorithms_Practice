@@ -157,6 +157,13 @@ public:
 
 	void setFileName(string fileName) {
 		this->fileName = fileName;
+		this->currentPos = 0;
+		this->currentSize = 0;
+		this->startPos = 0;
+		this->endPos = 0;
+		this->isEnd = true;
+
+
 	}
 
 	void setFileLength(int fileLength) {
