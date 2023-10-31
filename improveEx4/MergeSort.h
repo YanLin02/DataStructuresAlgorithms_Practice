@@ -588,8 +588,8 @@ public:
 		{
 			GenerateRuns();//生成有序的runs
 
-			testRunStartPos();
-			testTempFile();
+			//testRunStartPos();
+			//testTempFile();
 
 			p_Input[0].setFileName(TEMP_FILE_NAME);
 			p_Input[1].setFileName(TEMP_FILE_NAME);
