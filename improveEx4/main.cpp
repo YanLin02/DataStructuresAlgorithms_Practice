@@ -6,7 +6,7 @@ using namespace std;
 
 int main()
 {
-	srand(time(NULL));
+	//srand(time(NULL));
 	//srand(202310353);
 
 	int* arr = new int[TEST_SIZE];
@@ -29,6 +29,8 @@ int main()
 	MergeSort test("test.bin");
 	test.Sort();
 
+
+	cout << "\n\n结果：\n";
 	int temp;
 	ifstream f("test.bin", ios::binary);
 	while (f.read((char*)&temp, sizeof(int)))

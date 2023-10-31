@@ -32,6 +32,13 @@ public:
 		p_buffer = new int[BUFFER_SIZE];
 	}
 
+	Buffer()
+		:fileName(""), fileLength(0),
+		currentSize(0), currentPos(0),
+		startPos(0), endPos(0), isEnd(true) {
+		p_buffer = new int[BUFFER_SIZE];
+	}
+
 	~Buffer() {
 		delete[] p_buffer;
 	}
@@ -147,6 +154,14 @@ public:
 		return true;
 	}
 
+	int manualGet(int& num) {
+		int temp = currentPos;
+		if (currentPos < currentSize)//如果还没读完,读取
+			num = p_buffer[currentPos++];
+		//返回剩余的数目
+		return currentSize - temp;
+	}
+
 	bool put(int num) {
 		if (currentSize < BUFFER_SIZE) {
 			p_buffer[currentSize++] = num;
@@ -170,18 +185,19 @@ public:
 		this->fileLength = fileLength;
 	}
 
-	int getStatPos() {
-		return startPos;
-	}
+	int getStatPos() { return startPos; }
+
+	int getNextStatPos() { return startPos + currentSize; }
 
 	/// @brief 返回缓存是否达到最大容量
-	bool inMaxSize() {
-		return currentSize == BUFFER_SIZE;
-	}
+	bool inMaxSize() { return currentSize == BUFFER_SIZE; }
 
-	int getTail() {
-		return p_buffer[currentSize - 1];
-	}
+	int getTail() { return p_buffer[currentSize - 1]; }
+
+	bool isEndOfFile() { return isEnd; }
+
+	/// @brief 返回缓存中剩余的数目
+	int getLastNum() { return currentSize - currentPos; }
 
 	////////测试函数////////
 	void testPrint() {
